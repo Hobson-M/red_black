@@ -40,3 +40,20 @@ def determine_colors(number):
 
 # Create a function for loading past spin history from the text file when the application starts
 
+def rb_load_history():
+  
+    # Initialize an empty list to store the history.
+    history = []
+    # Check if the history file actually exists in the current directory.
+    if os.path.exists(HISTORY_FILE):
+        try:
+            # Open the file in read mode ('r').
+            with open(HISTORY_FILE, 'r') as f:
+                # Read each line, strip leading/trailing whitespace, convert to lowercase, and add it to the history list.
+                # It also filters to ensure only valid colors are loaded, adding robustness.
+                history = [line.strip().lower() for line in f if line.strip().lower() in ["red", "black", "green"]]
+        except IOError as e:
+            # If there's an error reading the file (e.g., permissions issue), show an error message.
+            messagebox.showerror("History Load Error", f"Could not load history: {e}")
+    # Return the loaded history list (will be empty if the file didn't exist or an error occurred).
+    return history
